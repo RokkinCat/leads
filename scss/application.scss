@@ -1,0 +1,92 @@
+.navbar-brand {
+  position: relative;
+  top: 0px;
+  img {
+    position: relative;
+    top: -2px;
+    margin-right: 6px;
+  }
+}
+
+.posts, .posts .post {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.post {
+  .btn {
+    margin-top: 8px;
+  }
+  .avatar {
+    position: relative;
+    right: -15px;
+  }
+  .delete {
+    color: #777;
+    cursor: pointer;
+  }
+  .hashtag {
+    cursor: pointer;
+  }
+}
+
+.search {
+  margin-bottom: 25px;
+}
+
+.form-control, .btn {
+  border-radius: 2px;
+}
+
+.btn-dark {
+  background-color: #333;
+  color: #FFF;
+  &:hover, &:active {
+    color: #FFF;
+  }
+}
+
+.form-control.list-group-item {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+
+.post .list-group-item.disabled {
+
+  &:before {
+    position: absolute;
+    top: 11px;
+    left: -16px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
+    border-right-color: #ddd;
+    border-width: 8px;
+  }
+
+  &:after {
+    position: absolute;
+    top: 11px;
+    left: -16px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
+    border-width: 7px;
+    border-right-color: #eee;
+    margin-top: 1px;
+    margin-left: 2px;
+  }
+
+}
