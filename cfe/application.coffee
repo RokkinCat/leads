@@ -1,26 +1,27 @@
 app = angular.module "leads", ["firebase"]
 
-app.controller "LeadsCtrl", ($scope, $firebase, $timeout) ->
+app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
   firebase = new Firebase("https://luminous-heat-7629.firebaseIO.com")
   sync = $firebase(firebase)
   $scope.data = sync.$asObject()
 
   messages = new Firebase("https://luminous-heat-7629.firebaseIO.com/messages")
   messageSink = $firebase(messages)
-  $scope.messages = messageSink.$asArray()
 
   $scope.filter = null
   $scope.search = {text: ""}
 
   authClient = new FirebaseSimpleLogin firebase, (error, user) ->
-    $scope.current_user = user
+    $http.get(user.thirdPartyUserData.organizations_url).then (data) ->
+      if user.thirdPartyUserData.login in ["nickgartmann","joshdholtz","jeregrine","stoodder","Gregadeaux","mitchellhenke"]
+        $scope.current_user = user
+        $scope.messages = messageSink.$asArray()
+      else
+        alert("You are not a member of RokkinCat!")
 
   $scope.login = () ->
     $scope.logging_in = true
-    authClient.login("github").then (user) ->
-      $scope.current_user = user
-      $scope.$apply()
-    .finally () ->
+    authClient.login("github").finally () ->
       $scope.logging_in = false
 
   $scope.post = (body) ->
