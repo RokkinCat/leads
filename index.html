@@ -43,7 +43,7 @@
           </div>
           <ul class="posts col-md-12">
             <li class="post row">
-              <div class="col-md-1"><img class="img img-responsive img-rounded" src="{{ current_user.thirdPartyUserData.avatar_url }}"></div>
+              <div class="col-md-1"><img class="img img-responsive img-rounded" ng-src="{{ current_user.thirdPartyUserData.avatar_url }}"></div>
               <div class="col-md-11">
                 <div class="list-group">
                   <div class="list-group-item disabled">
@@ -59,7 +59,7 @@
             </li>
             <li class="post row" ng-repeat="message in messages | filter:search.text | orderBy:'-created_at' ">
               <div class="col-md-1">
-                <img class="img img-responsive img-rounded" src="{{ message.user.thirdPartyUserData.avatar_url }}">
+                <img class="img img-responsive img-rounded" ng-src="{{ message.user.thirdPartyUserData.avatar_url }}">
                 <div class="caret-left"></div>
               </div>
               <div class="col-md-11">
@@ -67,12 +67,16 @@
                   <div class="list-group-item disabled">
                     <strong>{{ message.user.thirdPartyUserData.login }}</strong> <small>{{ message.created_at | ago }}</small>
                     <div ng-if="message.user.thirdPartyUserData.login == current_user.thirdPartyUserData.login" class="pull-right">
+                      <a ng-click="message.editing=true;" ng-if="!message.editing" class="delete"><span class="glyphicon glyphicon-pencil"></span></a>
+                      <a ng-click="message.editing=false; save(message);" ng-if="message.editing" class="delete"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                      &nbsp;
                       <a ng-click="delete(message)" class="delete"><span class="glyphicon glyphicon-trash"></span></a>
                     </div>
                   </div>
-                  <div class="list-group-item" markdown>
+                  <div class="list-group-item" markdown ng-if="!message.editing">
                     {{ message.body }}
                   </div>
+                  <textarea class="list-group-item form-control" ng-if="message.editing" ng-model="message.body"></textarea>
                 </div>
               </div>
             </li>

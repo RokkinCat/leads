@@ -32,6 +32,11 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
   };
   $scope.post = function(body) {
     $scope.loading = true;
+    $http.post("https://rkkn.slack.com/services/hooks/incoming-webhook?token=KQUBgssIs8QPyLtoLCmirZ3H", {
+      text: body,
+      icon: "https://avatars1.githubusercontent.com/u/1031174?v=2&s=200",
+      username: "leads-" + $scope.current_user.thirdPartyUserData.login
+    });
     return $scope.messages.$add({
       user: $scope.current_user,
       created_at: new Date().getTime(),
@@ -45,9 +50,12 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
       return $scope.loading = true;
     });
   };
-  return $scope.logout = function() {
+  $scope.logout = function() {
     authClient.logout();
     return $scope.current_user = null;
+  };
+  return $scope.save = function(message) {
+    return $scope.messages.$save(message);
   };
 });
 
@@ -55,7 +63,7 @@ app.directive("markdown", function() {
   return {
     restrict: "A",
     link: function($scope, $element, $attrs) {
-      return $scope.$watch('message', function() {
+      return $scope.$watch('message.body', function() {
         var converter, text;
         converter = new Showdown.converter({
           extensions: []

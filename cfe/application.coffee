@@ -26,9 +26,14 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
 
   $scope.post = (body) ->
     $scope.loading = true
+    $http.post("https://rkkn.slack.com/services/hooks/incoming-webhook?token=KQUBgssIs8QPyLtoLCmirZ3H", {
+        text: body,
+        icon: "https://avatars1.githubusercontent.com/u/1031174?v=2&s=200",
+        username: "leads-#{$scope.current_user.thirdPartyUserData.login}"
+      })
+
     $scope.messages.$add(user:$scope.current_user, created_at: new Date().getTime(), body:body).finally () ->
       $scope.loading = false
-
   $scope.delete = (message) ->
     $scope.messages.$remove(message).finally () ->
       $scope.loading = true
@@ -37,11 +42,14 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
     authClient.logout()
     $scope.current_user = null
 
+  $scope.save = (message) ->
+    $scope.messages.$save(message)
+
 
 app.directive "markdown", () ->
   restrict: "A",
   link: ($scope, $element, $attrs) ->
-    $scope.$watch('message', () ->
+    $scope.$watch('message.body', () ->
       converter = new Showdown.converter({extensions: []})
 
       text = $element.text()
