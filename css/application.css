@@ -24,6 +24,10 @@
 
 .search {
   margin-bottom: 25px; }
+  .search .close {
+    position: absolute;
+    top: 5px;
+    right: 25px; }
 
 .form-control, .btn {
   border-radius: 2px; }

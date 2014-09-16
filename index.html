@@ -39,6 +39,7 @@
         <div class="col-md-10 row">
           <div class="col-md-6 col-md-offset-1 search">
             <input type="search" ng-model="search.text" class="form-control" placeholder="Search" />
+            <button ng-click="search.text=''" ng-show="search.text" type="button" class="close"><span>&times;</span></button>
           </div>
           <ul class="posts col-md-12">
             <li class="post row">

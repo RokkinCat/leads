@@ -33,6 +33,12 @@
 
 .search {
   margin-bottom: 25px;
+
+  .close {
+    position: absolute;
+    top: 5px;
+    right: 25px;
+  }
 }
 
 .form-control, .btn {
