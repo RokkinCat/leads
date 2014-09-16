@@ -53,13 +53,13 @@ body {
   margin-bottom: 25px; }
   .search .close {
     position: absolute;
-    top: 5px;
+    top: 8px;
     right: 25px; }
 
 .star {
-  font-size: 1.2em;
+  font-size: 1.1em;
   position: relative;
-  top: 9px;
+  top: 10px;
   left: -20px;
   color: #AAA;
   cursor: pointer; }
@@ -109,3 +109,7 @@ body {
   border-right-color: #eee;
   margin-top: 1px;
   margin-left: 2px; }
+
+.saved-searches a {
+  cursor: pointer;
+  display: block; }

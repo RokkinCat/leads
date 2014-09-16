@@ -88,17 +88,17 @@
         </div>
         <div class="col-md-3">
           <br><br><br>
-          <div class="list-group">
+          <div class="list-group saved-searches">
             <div class="list-group-item disabled">
               <strong>Saved searches</strong>
             </div>
             <div class="list-group-item" ng-if="searches.length == 0">
               No saved searches
             </div>
-            <div class="list-group-item" ng-repeat="search in searches">
-              <a ng-click="searchFor(search.$value)">{{ search.$value }}</a>
-              <button ng-click="unSaveSearch(search.$value)" type="button" class="close"><span>&times;</span></button>
-            </div>
+            <a ng-click="searchFor(search.$value)" class="list-group-item"  ng-repeat="search in searches">
+              {{ search.$value }}
+              <button ng-click="unSaveSearch(search.$value);$event.stopPropagation();" type="button" class="close"><span>&times;</span></button>
+            </a>
           </div>
         </div>
       </div>
