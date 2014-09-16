@@ -16,16 +16,14 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
   };
   $scope.searches = [];
   authClient = new FirebaseSimpleLogin(firebase, function(error, user) {
-    return $http.get(user.thirdPartyUserData.organizations_url).then(function(data) {
-      var _ref;
-      if ((_ref = user.thirdPartyUserData.login) === "nickgartmann" || _ref === "joshdholtz" || _ref === "jeregrine" || _ref === "stoodder" || _ref === "Gregadeaux" || _ref === "mitchellhenke") {
-        $scope.current_user = user;
-        $scope.messages = messageSink.$asArray();
-        return $scope.searches = $firebase(new Firebase("https://luminous-heat-7629.firebaseIO.com/" + $scope.current_user.id + "/searches")).$asArray();
-      } else {
-        return alert("You are not a member of RokkinCat!");
-      }
-    });
+    var _ref;
+    if ((_ref = user.thirdPartyUserData.login) === "nickgartmann" || _ref === "joshdholtz" || _ref === "jeregrine" || _ref === "stoodder" || _ref === "Gregadeaux" || _ref === "mitchellhenke") {
+      $scope.current_user = user;
+      $scope.messages = messageSink.$asArray();
+      return $scope.searches = $firebase(new Firebase("https://luminous-heat-7629.firebaseIO.com/" + $scope.current_user.id + "/searches")).$asArray();
+    } else {
+      return alert("You are not a member of RokkinCat!");
+    }
   });
   $scope.login = function() {
     $scope.logging_in = true;

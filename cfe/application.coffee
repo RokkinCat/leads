@@ -14,13 +14,12 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
   $scope.searches = []
 
   authClient = new FirebaseSimpleLogin firebase, (error, user) ->
-    $http.get(user.thirdPartyUserData.organizations_url).then (data) ->
-      if user.thirdPartyUserData.login in ["nickgartmann","joshdholtz","jeregrine","stoodder","Gregadeaux","mitchellhenke"]
-        $scope.current_user = user
-        $scope.messages = messageSink.$asArray()
-        $scope.searches = $firebase(new Firebase("https://luminous-heat-7629.firebaseIO.com/#{$scope.current_user.id}/searches")).$asArray()
-      else
-        alert("You are not a member of RokkinCat!")
+    if user.thirdPartyUserData.login in ["nickgartmann","joshdholtz","jeregrine","stoodder","Gregadeaux","mitchellhenke"]
+      $scope.current_user = user
+      $scope.messages = messageSink.$asArray()
+      $scope.searches = $firebase(new Firebase("https://luminous-heat-7629.firebaseIO.com/#{$scope.current_user.id}/searches")).$asArray()
+    else
+      alert("You are not a member of RokkinCat!")
 
   $scope.login = () ->
     $scope.logging_in = true
