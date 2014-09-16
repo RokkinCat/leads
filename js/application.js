@@ -1,4 +1,5 @@
-var app;
+var app,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 app = angular.module("leads", ["firebase"]);
 
@@ -13,12 +14,14 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
   $scope.search = {
     text: ""
   };
+  $scope.searches = [];
   authClient = new FirebaseSimpleLogin(firebase, function(error, user) {
     return $http.get(user.thirdPartyUserData.organizations_url).then(function(data) {
       var _ref;
       if ((_ref = user.thirdPartyUserData.login) === "nickgartmann" || _ref === "joshdholtz" || _ref === "jeregrine" || _ref === "stoodder" || _ref === "Gregadeaux" || _ref === "mitchellhenke") {
         $scope.current_user = user;
-        return $scope.messages = messageSink.$asArray();
+        $scope.messages = messageSink.$asArray();
+        return $scope.searches = $firebase(new Firebase("https://luminous-heat-7629.firebaseIO.com/" + $scope.current_user.id + "/searches")).$asArray();
       } else {
         return alert("You are not a member of RokkinCat!");
       }
@@ -54,8 +57,25 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
     authClient.logout();
     return $scope.current_user = null;
   };
-  return $scope.save = function(message) {
+  $scope.save = function(message) {
     return $scope.messages.$save(message);
+  };
+  $scope.saveSearch = function(text) {
+    return $scope.searches.$add(text);
+  };
+  $scope.isSavedSearch = function(text) {
+    var _ref;
+    return _ref = text.toLowerCase(), __indexOf.call($scope.searches.map(function(v) {
+      return v.$value.toLowerCase();
+    }), _ref) >= 0;
+  };
+  $scope.unSaveSearch = function(text) {
+    return $scope.searches.$remove($scope.searches.filter(function(item) {
+      return item.$value.toLowerCase() === text.toLowerCase();
+    })[0]);
+  };
+  return $scope.searchFor = function(text) {
+    return $scope.search.text = text;
   };
 });
 

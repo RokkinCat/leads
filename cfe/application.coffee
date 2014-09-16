@@ -11,11 +11,14 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
   $scope.filter = null
   $scope.search = {text: ""}
 
+  $scope.searches = []
+
   authClient = new FirebaseSimpleLogin firebase, (error, user) ->
     $http.get(user.thirdPartyUserData.organizations_url).then (data) ->
       if user.thirdPartyUserData.login in ["nickgartmann","joshdholtz","jeregrine","stoodder","Gregadeaux","mitchellhenke"]
         $scope.current_user = user
         $scope.messages = messageSink.$asArray()
+        $scope.searches = $firebase(new Firebase("https://luminous-heat-7629.firebaseIO.com/#{$scope.current_user.id}/searches")).$asArray()
       else
         alert("You are not a member of RokkinCat!")
 
@@ -44,6 +47,19 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
 
   $scope.save = (message) ->
     $scope.messages.$save(message)
+
+  $scope.saveSearch = (text) ->
+    $scope.searches.$add(text)
+
+  $scope.isSavedSearch = (text) ->
+    return text.toLowerCase() in $scope.searches.map((v) -> v.$value.toLowerCase())
+
+  $scope.unSaveSearch = (text) ->
+    $scope.searches.$remove($scope.searches.filter((item) ->
+      item.$value.toLowerCase() == text.toLowerCase())[0])
+
+  $scope.searchFor = (text) ->
+    $scope.search.text = text
 
 
 app.directive "markdown", () ->

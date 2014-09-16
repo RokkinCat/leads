@@ -41,6 +41,19 @@
   }
 }
 
+.star {
+  font-size: 1.2em;
+  position: relative;
+  top: 9px;
+  left: -20px;
+  color: #AAA;
+  cursor: pointer;
+
+  &.full {
+    color: #eb5043 !important;
+  }
+}
+
 .form-control, .btn {
   border-radius: 2px;
 }
