@@ -27,14 +27,11 @@ app.controller("LeadsCtrl", function($scope, $firebase, $timeout) {
     });
   };
   $scope.post = function(body) {
-    var bodyCopy;
     $scope.loading = true;
-    bodyCopy = body;
-    $scope.body = "";
     return $scope.messages.$add({
       user: $scope.current_user,
       created_at: new Date().getTime(),
-      body: bodyCopy
+      body: body
     })["finally"](function() {
       return $scope.loading = false;
     });
@@ -56,7 +53,7 @@ app.directive("linkHashtags", function($timeout) {
       return $scope.$watch('message', function() {
         var text;
         text = $element.html();
-        $element.html(text.replace(/(#.+)(\s)/g, "<a class=\"hashtag\">$1</a>$2"));
+        $element.html(text.replace(/(#.+\b)/g, "<a class=\"hashtag\">$1</a>"));
         return $element.find("a").on("click", function(event) {
           if (angular.element(event.target).hasClass("hashtag")) {
             $scope.search.text = angular.element(event.target).text();
