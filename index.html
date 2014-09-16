@@ -50,7 +50,7 @@
                   </div>
                   <textarea rows="5" ng-model="body" class="list-group-item form-control"></textarea>
                   <div class="pull-right">
-                    <button class="btn btn-dark btn-small" ng-click="post(body)">Post</button>
+                    <button class="btn btn-dark btn-small" ng-click="post(body); body=''">Post</button>
                   </div>
                   <div class="clearfix"></div>
                 </div>
@@ -69,7 +69,7 @@
                       <a ng-click="delete(message)" class="delete"><span class="glyphicon glyphicon-trash"></span></a>
                     </div>
                   </div>
-                  <div class="list-group-item"  link-hashtags markdown>
+                  <div class="list-group-item"  link-hashtags>
                     {{ message.body }}
                   </div>
                 </div>

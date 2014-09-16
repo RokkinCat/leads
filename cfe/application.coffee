@@ -26,9 +26,7 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
 
   $scope.post = (body) ->
     $scope.loading = true
-    bodyCopy = body
-    $scope.body = ""
-    $scope.messages.$add(user:$scope.current_user, created_at: new Date().getTime(), body:bodyCopy).finally () ->
+    $scope.messages.$add(user:$scope.current_user, created_at: new Date().getTime(), body:body).finally () ->
       $scope.loading = false
 
   $scope.delete = (message) ->
@@ -44,7 +42,7 @@ app.directive "linkHashtags", ($timeout) ->
   link: ($scope, $element, $attrs) ->
     $scope.$watch 'message', ->
       text = $element.html()
-      $element.html(text.replace(/(#.+)(\s)/g, """<a class="hashtag">$1</a>$2"""))
+      $element.html(text.replace(/(#.+\b)/g, """<a class="hashtag">$1</a>"""))
       $element.find("a").on("click", (event) ->
         if angular.element(event.target).hasClass("hashtag")
           $scope.search.text = angular.element(event.target).text()
