@@ -38,25 +38,23 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
     $scope.current_user = null
 
 
-app.directive "linkHashtags", ($timeout) ->
-  link: ($scope, $element, $attrs) ->
-    $scope.$watch 'message', ->
-      text = $element.html()
-      $element.html(text.replace(/(#.+\b)/g, """<a class="hashtag">$1</a>"""))
-      $element.find("a").on("click", (event) ->
-        if angular.element(event.target).hasClass("hashtag")
-          $scope.search.text = angular.element(event.target).text()
-          $scope.$apply()
-      )
-
-
 app.directive "markdown", () ->
   restrict: "A",
   link: ($scope, $element, $attrs) ->
     $scope.$watch('message', () ->
       converter = new Showdown.converter({extensions: []})
-      text = $element.text().replace(/^\s+/,"")
+
+      text = $element.text()
+      text = text.replace(/^\s+/,"")
+      text = text.replace(/(#.+?)\b/g, """<a class="hashtag">$1</a>""")
+
       $element.html(converter.makeHtml(text))
+
+      $element.find("a").on("click", (event) ->
+        if angular.element(event.target).hasClass("hashtag")
+          $scope.search.text = angular.element(event.target).text()
+          $scope.$apply()
+      )
       )
 
 app.filter "ago", () ->

@@ -51,24 +51,6 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
   };
 });
 
-app.directive("linkHashtags", function($timeout) {
-  return {
-    link: function($scope, $element, $attrs) {
-      return $scope.$watch('message', function() {
-        var text;
-        text = $element.html();
-        $element.html(text.replace(/(#.+\b)/g, "<a class=\"hashtag\">$1</a>"));
-        return $element.find("a").on("click", function(event) {
-          if (angular.element(event.target).hasClass("hashtag")) {
-            $scope.search.text = angular.element(event.target).text();
-            return $scope.$apply();
-          }
-        });
-      });
-    }
-  };
-});
-
 app.directive("markdown", function() {
   return {
     restrict: "A",
@@ -78,8 +60,16 @@ app.directive("markdown", function() {
         converter = new Showdown.converter({
           extensions: []
         });
-        text = $element.text().replace(/^\s+/, "");
-        return $element.html(converter.makeHtml(text));
+        text = $element.text();
+        text = text.replace(/^\s+/, "");
+        text = text.replace(/(#.+?)\b/g, "<a class=\"hashtag\">$1</a>");
+        $element.html(converter.makeHtml(text));
+        return $element.find("a").on("click", function(event) {
+          if (angular.element(event.target).hasClass("hashtag")) {
+            $scope.search.text = angular.element(event.target).text();
+            return $scope.$apply();
+          }
+        });
       });
     }
   };
