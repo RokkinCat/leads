@@ -106,3 +106,26 @@ app.filter("ago", function() {
     return moment(input).fromNow();
   };
 });
+
+app.directive("cmdEnter", function($parse) {
+  return {
+    restrict: "A",
+    compile: function($element, $attrs) {
+      var fn;
+      fn = $parse($attrs["cmdEnter"]);
+      return function($scope, $element, $attrs) {
+        return $element.on("keydown", function(event) {
+          var cb;
+          if (event.keyCode === 13 && event.metaKey) {
+            cb = function() {
+              return fn($scope, {
+                $event: event
+              });
+            };
+            return $scope.$apply(cb);
+          }
+        });
+      };
+    }
+  };
+});

@@ -83,3 +83,14 @@ app.directive "markdown", () ->
 app.filter "ago", () ->
   (input) ->
     moment(input).fromNow()
+
+app.directive "cmdEnter", ($parse) ->
+  restrict: "A",
+  compile: ($element, $attrs) ->
+    fn = $parse($attrs["cmdEnter"]);
+    ($scope, $element, $attrs) ->
+      $element.on "keydown", (event) ->
+        if event.keyCode == 13 && event.metaKey
+          cb = () ->
+            fn($scope, {$event: event})
+          $scope.$apply(cb)
