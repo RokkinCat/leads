@@ -47,9 +47,11 @@ app.controller("LeadsCtrl", function($scope, $firebase, $http) {
     });
   };
   $scope["delete"] = function(message) {
-    return $scope.messages.$remove(message)["finally"](function() {
-      return $scope.loading = true;
-    });
+    if (confirm('Are you sure you want to delete this lead update?')) {
+      return $scope.messages.$remove(message)["finally"](function() {
+        return $scope.loading = true;
+      });
+    }
   };
   $scope.logout = function() {
     authClient.logout();

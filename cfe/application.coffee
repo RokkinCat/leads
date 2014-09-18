@@ -37,8 +37,9 @@ app.controller "LeadsCtrl", ($scope, $firebase, $http) ->
     $scope.messages.$add(user:$scope.current_user, created_at: new Date().getTime(), body:body).finally () ->
       $scope.loading = false
   $scope.delete = (message) ->
-    $scope.messages.$remove(message).finally () ->
-      $scope.loading = true
+    if confirm('Are you sure you want to delete this lead update?') 
+      $scope.messages.$remove(message).finally () ->
+        $scope.loading = true
 
   $scope.logout = ->
     authClient.logout()
